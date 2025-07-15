@@ -109,7 +109,7 @@ class SummaryCard extends StatelessWidget {
             color: colorScheme.onSecondary.withValues(alpha: 0.45),
             shape: BoxShape.circle,
           ),
-          child: Icon(icon, color: color),
+          child: Icon(icon, color: color), 
         ),
         const SizedBox(height: 8),
         // Title

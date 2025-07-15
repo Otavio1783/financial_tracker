@@ -2,6 +2,7 @@ import 'package:financial_tracker/common/types/date_filter_type.dart';
 import 'package:financial_tracker/domain/usecase/use_case_facade.dart';
 import 'package:signals_flutter/signals_flutter.dart';
 
+
 import '../../common/errors/errors_classes.dart';
 import '../../common/patterns/command.dart';
 import '../../common/patterns/result.dart';
@@ -22,6 +23,7 @@ class HomePageController {
     saveTransaction = Command1(_saveTransaction);
     undoDelectedTransaction = Command1(_undoDelectedTransaction);
     deleteTransaction = Command1(_deleteTransaction);
+    editTransaction = Command1(_editTransaction);
     //loadSample = Command0<void, void>(_resetToSample);
     incomes = Computed(
       () =>
@@ -62,7 +64,11 @@ class HomePageController {
   late final Command1<void, Failure, TransactionEntity> saveTransaction;
   late final Command1<void, Failure, TransactionEntity> undoDelectedTransaction;
   late final Command1<void, Failure, String> deleteTransaction;
+  late final Command1<void, Failure, TransactionEntity> editTransaction;
   late final Command2<List<TransactionEntity>, Failure, DateTime, DateTime>
+  
+  
+
   searchTransactionsByDate;
   //late final Command0<void, void> loadSample;
 
@@ -139,6 +145,20 @@ class HomePageController {
     TransactionEntity transaction,
   ) async {
     final result = await _transactionsUseCases.addTransaction.call((
+      transaction: transaction,
+    ));
+
+    if (result.isSuccess) {
+      _transactions.value = [..._transactions.value, transaction];
+    }
+
+    return result;
+  }
+
+  Future<Result<void, Failure>> _editTransaction(
+    TransactionEntity transaction,
+  ) async {
+    final result = await _transactionsUseCases.editTransaction.call((
       transaction: transaction,
     ));
 

@@ -14,6 +14,8 @@ typedef CommandAction1<Success, Error, A> = Future<Result<Success, Error>> Funct
 /// Define o tipo de função assíncrona com 2 argumentos do tipo A1 e A2.
 typedef CommandAction2<Success, Error, A1, A2> = Future<Result<Success, Error>> Function(A1,A2);
 
+typedef CommandAction3<Success, Error, A1, A2, A3> = Future<Result<Success, Error>> Function(A1,A2,A3);
+
 /// Classe base que executa ações assíncronas e permite reagir às mudanças.
 /// Usa sinais para notificar a interface automaticamente.
 abstract class Command<Success, Error> {
@@ -95,5 +97,16 @@ class Command2<Success, Error, A1, A2> extends Command<Success, Error> {
   /// Executa a ação passando 2 argumentos
   Future<void> execute(A1 argument1, A2 argment2) async {
     await _execute(() => _action(argument1, argment2));
+  }
+  
+}
+
+class Command3<Success, Error, A1, A2, A3> extends Command<Success, Error> {
+  Command3(this._action);
+  final CommandAction3<Success, Error, A1, A2, A3> _action;
+
+  /// Executa a ação passando 3 argumentos
+  Future<void> execute(A1 argument1, A2 argment2, A3 argment3) async {
+    await _execute(() => _action(argument1, argment2, argment3));
   }
 }
